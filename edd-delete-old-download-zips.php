@@ -3,7 +3,7 @@
  * Plugin Name: Easy Digital Downloads - Delete Old Download Zips
  * Plugin URI: https://github.com/csalzano/edd-delete-old-download-zips
  * Description: Deletes .zip files from Media Library that are no longer associated with downloads. Active and deactivate.
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: Corey Salzano
  * Author URI: https://breakfastco.xyz
  * Text Domain: edd-delete-old-download-zips
@@ -25,6 +25,12 @@ register_activation_hook( __FILE__, 'breakfast_edd_delete_old_download_zips' );
  * @return void
  */
 function breakfast_edd_delete_old_download_zips() {
+	// Can this user delete posts?
+	if ( ! current_user_can( 'delete_posts' ) ) {
+		// No. Abort.
+		return;
+	}
+
 	$downloads = get_posts(
 		array(
 			'post_status'    => array( 'publish', 'draft', 'private' ),
